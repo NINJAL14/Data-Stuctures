@@ -1,0 +1,229 @@
+Implementing Singly Linkes List
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *next;
+};
+struct node *new_node, *head, *temp, *pre;
+
+void Create_list()
+{
+    int num;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    printf("Enter Element : ");
+    scanf("%d", &num);
+    new_node->data = num;
+
+    if (head == NULL)
+    {
+        head = new_node;
+        new_node->next = NULL;
+    }
+    else
+    {
+        new_node->next = head;
+        head = new_node;
+    }
+}
+
+void Insert_at_beginning()
+{
+    int num;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    printf("Enter Element : ");
+    scanf("%d", &num);
+    new_node->data = num;
+    new_node->next = head;
+    head = new_node;
+}
+
+void Insert_at_position()
+{
+    int num, pos;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    printf("Enter position : ");
+    scanf("%d", &pos);
+    printf("Enter Element : ");
+    scanf("%d", &num);
+    new_node->data = num;
+    temp = head;
+    pre = NULL;
+    while (temp->data != pos)
+    {
+        pre = temp;
+        temp = temp->next;
+    }
+    new_node->next = temp;
+    pre->next = new_node;
+}
+
+void Insert_at_end()
+{
+    int num;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    printf("Enter Element : ");
+    scanf("%d", &num);
+    new_node->data = num;
+    new_node->next = NULL;
+    if (head == NULL)
+    {
+        head = new_node;
+        head->next = NULL;
+    }
+    else
+    {
+        temp = head;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = new_node;
+    }
+}
+
+void Delete_from_beginning()
+{
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+    else
+    {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+void Delete_from_position()
+{
+    int pos;
+    printf("Enter position : ");
+    scanf("%d", &pos);
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+    else
+    {
+        pre = NULL;
+        temp = head;
+        while (temp->data != pos)
+        {
+            pre = temp;
+            temp = temp->next;
+        }
+        pre->next = temp->next;
+        free(temp);
+    }
+}
+
+void Delete_from_end()
+{
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+    else
+    {
+        pre = NULL;
+        temp = head;
+        while (temp->next != NULL)
+        {
+            pre = temp;
+            temp = temp->next;
+        }
+        pre->next = NULL;
+        free(temp);
+    }
+}
+
+void Display()
+{
+    temp = head;
+    if (temp == NULL)
+    {
+        printf("List is empty.\n");
+        return;
+    }
+    else
+    {
+        while (temp != NULL)
+        {
+            printf("%d ", temp->data);
+            temp = temp->next;
+        }
+    }
+    printf("\n");
+}
+
+int main()
+{
+    int choice;
+
+    do
+    {
+        printf("\n---Linked List Menu---\n");
+        printf("1. Create a linked List\n");
+        printf("2. Insert at the beginning\n");
+        printf("3. Insert at the specific position\n");
+        printf("4. Insert at the end\n");
+        printf("5. Delete from beginning\n");
+        printf("6. Delete from specific position\n");
+        printf("7. Delete from end\n");
+        printf("8. Display\n");
+        printf("9. Exit\n");
+        printf("Enter your choice : ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            Create_list();
+            break;
+
+        case 2:
+            Insert_at_beginning();
+            break;
+
+        case 3:
+            Insert_at_position();
+            break;
+
+        case 4:
+            Insert_at_end();
+            break;
+
+        case 5:
+            Delete_from_beginning();
+            break;
+
+        case 6:
+            Delete_from_position();
+            break;
+
+        case 7:
+            Delete_from_end();
+            break;
+
+        case 8:
+            Display();
+            break;
+
+        case 9:
+            printf("Exiting...\n");
+            break;
+
+        default:
+            printf("Invalid choice\n");
+            break;
+        }
+    } while (choice != 9);
+}
