@@ -1,0 +1,105 @@
+Implementing a menu-driven program for queue operations: insertion (enqueue), deletion (dequeue), and display. 
+
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 5
+
+int Q[MAX];
+int front = -1;
+int rear = -1;
+
+
+int isEmpty(){
+    return (front == -1 || front > rear);
+}
+
+int isFull(){
+    return (rear == (MAX - 1));
+}
+
+void Enqueue(int val)
+{
+    if (isFull()) {
+        printf("Queue is full\n");
+        return;
+    }
+    else if (front == -1)
+    {
+        front = 0;
+        rear = 0;
+    }
+    else
+    {
+        rear = rear + 1;
+    }
+
+    Q[rear] = val;
+}
+
+void Dequeue()
+{
+    int val;
+    if (isEmpty())
+    {
+        printf("Queue is Empty \n");
+    }
+    else
+    {
+        val = Q[front];
+        front = front + 1;
+        printf("Deleted element is : %d ", val);
+    }
+}
+
+
+void Display()
+{
+    if (front == -1)
+    {
+        printf("Queue is Empty \n");
+    }
+    for (int i = front; i <= rear; i++)
+        printf("%d ", Q[i]);
+}
+
+int main()
+{
+    int choice;
+    int value;
+
+    do
+    {
+        printf("\n---Menu Driven Program---\n");
+        printf("1. Enqueue \n");
+        printf("2. Dequeue \n");
+        printf("3. Display \n");
+        printf("4. Exit \n");
+        printf("Enter Your choice : ");
+        scanf("%d", &choice);
+
+        switch ((choice))
+        {
+        case 1:
+            printf("Enter the value to Enqueue : ");
+            scanf("%d", &value);
+            Enqueue(value);
+            break;
+
+        case 2:
+            Dequeue();
+            break;
+
+        case 3:
+            Display();
+            break;
+
+        case 4:
+            printf("Exiting...");
+            break;
+
+        default:
+            printf("Invalid choice. Please choose a valid option.");
+        }
+    } while (choice != 4);
+    return 0;
+}
