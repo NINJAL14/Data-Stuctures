@@ -1,0 +1,233 @@
+Implementing Binary Tree and Deleting, Inserting and Searching Node
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *left, *right;
+};
+
+struct node *Insert(struct node *root, int value)
+{
+    struct node *new_node;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->data = value;
+
+    if (root == NULL)
+    {
+
+        new_node->left = NULL;
+        new_node->right = NULL;
+        return new_node;
+    }
+
+    if (value < root->data)
+    {
+        root->left = Insert(root->left, value);
+    }
+    else if (value > root->data)
+    {
+        root->right = Insert(root->right, value);
+    }
+
+    return root;
+}
+struct node *findMin(struct node *root) {
+    if (root == NULL) {
+        return NULL;
+    }
+    while (root->left != NULL) {
+        root = root->left;
+    }
+    return root;
+}
+
+struct node *deleteNode(struct node *root, int key)
+{
+    if (root == NULL)
+    {
+        return root;
+    }
+
+    if (key < root->data)
+    {
+        root->left = deleteNode(root->left, key);
+    }
+    else if (key > root->data)
+    {
+        root->right = deleteNode(root->right, key);
+    }
+    else
+    {
+        //Node with only 1 child or no child
+        if (root->left == NULL)
+        {
+            struct node *temp = root->right;
+            free(root);
+            return temp;
+        }
+
+        else if (root->right == NULL)
+        {
+            struct node *temp = root->left;
+            free(root);
+            return temp;
+        }
+
+        // Node with two Children : Get the inorder successor (smallest in the right subtree)
+        struct node *temp = findMin(root->right);
+        root->data = temp->data;
+        root->right = deleteNode(root->right, temp->data);
+    }
+    return root;
+}
+
+struct node *search(struct node *root, int key)
+{
+    if (root == NULL || root->data == key)
+    {
+        return root;
+    }
+
+    if (key < root->data)
+    {
+        return search(root->left, key);
+    }
+    return search(root->right, key);
+}
+
+struct node *findMax(struct node *root) {
+    if (root == NULL) {
+        return NULL;
+    }
+    while (root->right != NULL) {
+        root = root->right;
+    }
+    return root;
+}
+
+void PREORDER(struct node *root)
+{
+    if (root != NULL)
+    {
+        printf("%d ", root->data);
+        PREORDER(root->left);
+        PREORDER(root->right);
+    }
+}
+
+void INORDER(struct node *root)
+{
+    if (root != NULL)
+    {
+        INORDER(root->left);
+        printf("%d ", root->data);
+        INORDER(root->right);
+    }
+}
+
+void POSTORDER(struct node *root)
+{
+    if (root != NULL)
+    {
+        POSTORDER(root->left);
+        POSTORDER(root->right);
+        printf("%d ", root->data);
+    }
+}
+
+int main()
+{
+    int choice, value;
+    struct node *root = NULL;
+    do
+    {
+        printf("\n---Binary Search Tree Menu---\n");
+        printf("1. Insert a value\n");
+        printf("2. Delete a value\n");
+        printf("3. Search a value\n");
+        printf("4. Find Max value\n");
+        printf("5. Find Min value\n");
+        printf("6. PREORDER TRAVERSAL\n");
+        printf("7. INORDER TRAVERSAL\n");
+        printf("8. POSTORDER TRAVERSAL\n");
+        printf("9. Exit\n");
+        printf("Enter your choice : ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            printf("Enter the value : ");
+            scanf("%d", &value);
+            root = Insert(root, value);
+            break;
+
+        case 2:
+            printf("Enter value to delete : ");
+            scanf("%d", &value);
+            root = deleteNode(root, value);
+            break;
+
+        case 3:
+            printf("Enter value to Search : ");
+            scanf("%d", value);
+            struct node *foundNode = search(root, value);
+            if (foundNode != NULL)
+            {
+                printf("Found : %d\n", value);
+            }
+            else
+            {
+                printf("Not found : %d\n", value);
+            }
+            break;
+
+        case 4:
+            struct node *maxNode = findMax(root);
+            if(maxNode != NULL)
+            {
+                printf("The maximum value is %d ", maxNode->data);
+            }
+            else 
+            {
+                printf("Tree is Empty !\n");
+            }
+
+        case 5:
+            struct node *MinNode = findMin(root);
+            if(MinNode != NULL)
+            {
+                printf("The minimum value is %d ", MinNode->data);
+            }
+            else 
+            {
+                printf("Tree is Empty !\n");
+            }
+
+        case 6:
+            printf("\nPREORDER TRAVERSAL : ");
+            PREORDER(root);
+            break;
+
+        case 7:
+            printf("\nINORDER TRAVERSAL : ");
+            INORDER(root);
+            break;
+
+        case 8:
+            printf("\nPOSTORDER TRAVERSAL : ");
+            POSTORDER(root);
+            break;
+
+        case 9:
+            printf("Exiting...\n");
+            break;
+
+        default:
+            printf("Invalid choice !\n");
+        }
+    } while (choice != 9);
+}
