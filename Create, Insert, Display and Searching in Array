@@ -1,0 +1,149 @@
+A menu-driven program for array operations: creation, display, insertion at a given position, deletion from a given position, searching (linear and binary search)
+
+#include <stdio.h>
+
+#define MAX 100
+
+int arr[MAX];
+int size = 0;
+
+void Create() {
+    printf("Enter number of elements (max 100): ");
+    scanf("%d", &size);
+    if (size > MAX) {
+        printf("Size exceeds max limit.\n");
+        return;
+    }
+    printf("Enter %d elements: \n", size);
+    for (int i = 0; i < size; i++) {
+        scanf("%d", &arr[i]);
+    }
+}
+
+void Display() {
+    if (size == 0) {
+        printf("Array is empty.\n");
+        return;
+    }
+    printf("Array elements: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+void Insert() {
+    int pos, value;
+    if (size == MAX) {
+        printf("Array is full.\n");
+        return;
+    }
+    printf("Enter position to insert (0 to %d): ", size);
+    scanf("%d", &pos);
+    if (pos < 0 || pos > size) {
+        printf("Invalid position.\n");
+        return;
+    }
+    printf("Enter value to insert: ");
+    scanf("%d", &value);
+
+    for (int i = size; i > pos; i--) {
+        arr[i] = arr[i - 1];
+    }
+
+    arr[pos] = value;
+    size++;
+    printf("Inserted successfully.\n");
+}
+
+void Delete() {
+    int pos;
+    if (size == 0) {
+        printf("Array is empty.\n");
+        return;
+    }
+    printf("Enter position to delete (0 to %d): ", size - 1);
+    scanf("%d", &pos);
+
+    if (pos < 0 || pos >= size) {
+        printf("Invalid position.\n");
+        return;
+    }
+
+    for (int i = pos; i < size - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    size--;
+    printf("Deleted successfully.\n");
+}
+
+void LinearSearch() {
+    int value;
+    printf("Enter value to search (Linear Search): ");
+    scanf("%d", &value);
+
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == value) {
+            printf("Element %d found at index %d.\n", value, i);
+            return;
+        }
+    }
+    printf("Element not found.\n");
+}
+
+void BinarySearch() {
+    int value, low = 0, high = size - 1, mid;
+    printf("Note : Array must be sorted.\n");
+
+    if (size == 0) {
+        printf("Array is empty.\n");
+        return;
+    }
+
+    printf("Enter value to search (Binary Search): ");
+    scanf("%d", &value);
+
+    while (low <= high) {
+        mid = (low + high) / 2;
+
+        if (arr[mid] == value) {
+            printf("Element %d found at index %d.\n", value, mid);
+            return;
+        } else if (arr[mid] < value) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+
+    printf("Element not found.\n");
+}
+
+int main() {
+    int choice;
+    do {
+        printf("\nMenu:\n");
+        printf("1. Create an array\n");
+        printf("2. Insert an element\n");
+        printf("3. Delete an element\n");
+        printf("4. Display array\n");
+        printf("5. Linear Search\n");
+        printf("6. Binary Search\n");
+        printf("7. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: Create(); break;
+            case 2: Insert(); break;
+            case 3: Delete(); break;
+            case 4: Display(); break;
+            case 5: LinearSearch(); break;
+            case 6: BinarySearch(); break;
+            case 7: printf("Exiting program.\n"); break;
+            default: printf("Invalid choice. Try again.\n");
+        }
+    } while (choice != 7);
+
+    return 0;
+}
