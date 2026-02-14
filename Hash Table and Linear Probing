@@ -1,0 +1,91 @@
+Implementing a menu-driven program to perform the following operations on a Hash Table using Linear Probing
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+#define TABLE_SIZE 10
+#define EMPTY -1
+
+
+int hashtable[TABLE_SIZE];
+
+
+int hashfunction(int key)
+{
+    return key % TABLE_SIZE;
+}
+
+
+void insert(int key)
+{
+    int idx = hashfunction(key);
+    int StartIdx = idx;
+    int collisions = 0;
+
+
+    while (hashtable[idx] != EMPTY)
+    {
+        printf("Collision at index %d (occupied by %d)\n", idx, hashtable[idx]);
+        idx = (idx + 1) % TABLE_SIZE;
+        collisions++;
+        if (idx == StartIdx)
+        {
+            printf("Hash Table is Full, cannot insert %d\n", key);
+            return;
+        }
+    }
+
+
+    hashtable[idx] = key;
+    printf("Inserted %d at index %d (Collision %d)\n", key, idx, collisions);
+}
+
+
+void display()
+{
+    printf("\nHash Table:\n");
+    for (int i = 0; i < TABLE_SIZE; i++)
+    {
+        if (hashtable[i] != EMPTY)
+            printf("[%d] : %d\n", i, hashtable[i]);
+        else
+            printf("[%d] : Empty\n", i);
+    }
+}
+
+
+int main()
+{
+    int choice, key;
+    for (int i = 0; i < TABLE_SIZE; i++)
+        hashtable[i] = EMPTY;
+
+
+    printf("==== Hash Table Implementation (Linear Probing) ====\n");
+    while (1)
+    {
+        printf("\n1. Insert");
+        printf("\n2. Display");
+        printf("\n3. Exit");
+        printf("\nEnter your choice : ");
+        scanf("%d", &choice);
+
+
+        switch (choice)
+        {
+        case 1:
+            printf("Enter key to insert : ");
+            scanf("%d", &key);
+            insert(key);
+            break;
+        case 2:
+            display();
+            break;
+        case 3:
+            exit(0);
+        default:
+            printf("Invalid Choice!\n");
+        }
+    }
+}
