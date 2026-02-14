@@ -1,0 +1,82 @@
+Implementing Binary Tree and Performing Inorder, Preorder and Post order traversal
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *left, *right;
+};
+
+struct node *Create_Tree()
+{
+    int value;
+    struct node *new_tree;
+    new_tree = (struct node *)malloc(sizeof(struct node));
+    printf("Enter the value (-1 for no node): ");
+    scanf("%d", &value);
+
+    if (value == -1)
+    {
+        return NULL;
+    }
+    new_tree->data = value;
+
+    printf("\nEnter the left child of %d : \n", value);
+    new_tree->left = Create_Tree();
+
+    printf("\nEnter the right child of %d : \n", value);
+    new_tree->right = Create_Tree();
+
+    return new_tree;
+}
+
+void PREORDER(struct node *root)
+{
+    if (root != NULL)
+    {
+        printf("%d ", root->data);
+        PREORDER(root->left);
+        PREORDER(root->right);
+    }
+}
+
+void INORDER(struct node *root)
+{
+    if (root != NULL)
+    {
+        INORDER(root->left);
+        printf("%d ", root->data);
+        INORDER(root->right);
+    }
+}
+
+void POSTORDER(struct node *root)
+{
+    if (root != NULL)
+    {
+        POSTORDER(root->left);
+        POSTORDER(root->right);
+        printf("%d ", root->data);
+    }
+}
+
+int main()
+{
+    struct node *root = NULL;
+
+    printf("Create a Binary Tree\n");
+    root = Create_Tree();
+
+    printf("\nPREORDER TRAVERSAL : ");
+    PREORDER(root);
+
+    printf("\nINORDER TRAVERSAL : ");
+    INORDER(root);
+
+    printf("\nPOSTORDER TRAVERSAL : ");
+    POSTORDER(root);
+
+    return 0;
+}
