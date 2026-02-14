@@ -1,3 +1,5 @@
+Menu driven program for matrix operations: addition, multiplication, transpose
+
 include <stdio.h>
 
 #define MAX 10
